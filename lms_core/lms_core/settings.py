@@ -23,12 +23,18 @@ sys.path.insert(0, str(BASE_DIR))
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-rk%exy%be=g^a_c(6%ee=sffj&hd5wv$w$t7o!^oy&f)hbt@ma'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-rk%exy%be=g^a_c(6%ee=sffj&hd5wv$w$t7o!^oy&f)hbt@ma')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['.vercel.app', '.now.sh', '127.0.0.1', 'localhost']
+ALLOWED_HOSTS = [
+    '.onrender.com',
+    '127.0.0.1', 
+    'localhost',
+    '.vercel.app', 
+    '.now.sh'
+]
 
 
 # Application definition
@@ -80,16 +86,12 @@ WSGI_APPLICATION = 'lms_core.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}',
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
-
-# Use PostgreSQL for production if DATABASE_URL is provided
-import dj_database_url
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.parse(os.environ['DATABASE_URL'])
 
 
 # Password validation

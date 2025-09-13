@@ -1,0 +1,20 @@
+databases:
+  - name: educanvas-lms-db
+    databaseName: educanvas_lms
+    user: educanvas_user
+
+services:
+  - type: web
+    name: educanvas-lms
+    runtime: python3
+    buildCommand: "./build.sh"
+    startCommand: "./start.sh"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: educanvas-lms-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4

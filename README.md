@@ -21,6 +21,8 @@ A modern, Canvas-inspired Learning Management System built with Django, featurin
 
 ## Quick Start
 
+### Local Development
+
 1. **Clone the repository**
    ```bash
    git clone https://github.com/yourusername/educanvas-lms.git
@@ -50,6 +52,29 @@ A modern, Canvas-inspired Learning Management System built with Django, featurin
 6. **Access the application**
    - Student Dashboard: http://localhost:8000/
    - Admin Panel: http://localhost:8000/admin/
+
+### Deploy to Render.com
+
+1. **Fork/Clone this repository to your GitHub account**
+
+2. **Create a new Web Service on Render**
+   - Connect your GitHub repository
+   - Use the following settings:
+     - **Runtime**: Python 3
+     - **Build Command**: `./build.sh`
+     - **Start Command**: `./start.sh`
+
+3. **Create a PostgreSQL database on Render**
+   - Add a new PostgreSQL database
+   - Note the connection details
+
+4. **Set Environment Variables**
+   - `DATABASE_URL`: Your Render PostgreSQL connection string
+   - `SECRET_KEY`: A secure secret key for Django
+   - `DEBUG`: Set to `False` for production
+
+5. **Deploy**
+   - Your app will be available at `https://your-app-name.onrender.com`
 
 ## Project Structure
 
