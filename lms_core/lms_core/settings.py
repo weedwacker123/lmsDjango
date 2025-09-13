@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 import sys
 import os
 from pathlib import Path
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
@@ -92,10 +93,6 @@ DATABASES = {
         conn_health_checks=True,
     )
 }
-
-# For Render.com free tier - disable SSL requirement for PostgreSQL
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default']['OPTIONS'] = {'sslmode': 'require'}
 
 
 # Password validation
