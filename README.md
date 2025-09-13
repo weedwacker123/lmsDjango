@@ -53,28 +53,48 @@ A modern, Canvas-inspired Learning Management System built with Django, featurin
    - Student Dashboard: http://localhost:8000/
    - Admin Panel: http://localhost:8000/admin/
 
-### Deploy to Render.com
+### Deploy to Render.com (Free Tier)
 
-1. **Fork/Clone this repository to your GitHub account**
+1. **Push this repository to your GitHub account**
 
-2. **Create a new Web Service on Render**
+2. **Create a PostgreSQL Database (Free Tier)**
+   - Go to [render.com](https://render.com) and sign in
+   - Click "New +" → "PostgreSQL"
+   - Name: `educanvas-lms-db`
+   - Database Name: `educanvas_lms`
+   - User: `educanvas_user`
+   - Select **Free** plan
+   - Click "Create Database"
+   - Copy the **Internal Database URL** (starts with `postgresql://`)
+
+3. **Create a Web Service (Free Tier)**
+   - Click "New +" → "Web Service"
    - Connect your GitHub repository
-   - Use the following settings:
+   - Configure the service:
+     - **Name**: `educanvas-lms` (or your preferred name)
      - **Runtime**: Python 3
      - **Build Command**: `./build.sh`
      - **Start Command**: `./start.sh`
-
-3. **Create a PostgreSQL database on Render**
-   - Add a new PostgreSQL database
-   - Note the connection details
+     - **Instance Type**: Select **Free** ($0/month)
 
 4. **Set Environment Variables**
-   - `DATABASE_URL`: Your Render PostgreSQL connection string
-   - `SECRET_KEY`: A secure secret key for Django
-   - `DEBUG`: Set to `False` for production
+   - In the Web Service settings, add these environment variables:
+     - `DATABASE_URL`: Paste the Internal Database URL from step 2
+     - `SECRET_KEY`: Generate a secure key (you can use Django's `get_random_secret_key()`)
+     - `DEBUG`: `False`
 
 5. **Deploy**
+   - Click "Create Web Service"
+   - Wait for deployment to complete (5-10 minutes)
    - Your app will be available at `https://your-app-name.onrender.com`
+
+6. **Create Admin User**
+   - In your Render dashboard, go to your web service
+   - Click "Shell" tab
+   - Run: `cd lms_core && python manage.py createsuperuser`
+   - Follow the prompts to create your admin account
+
+**Note**: Free tier services may spin down after 15 minutes of inactivity and take 30-60 seconds to restart.
 
 ## Project Structure
 

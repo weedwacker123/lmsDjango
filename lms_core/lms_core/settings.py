@@ -93,6 +93,10 @@ DATABASES = {
     )
 }
 
+# For Render.com free tier - disable SSL requirement for PostgreSQL
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default']['OPTIONS'] = {'sslmode': 'require'}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
