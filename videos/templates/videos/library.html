@@ -1,0 +1,180 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Learning Management System</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i> EduCanvas
+        </div>
+        <div class="user-menu">
+            <i class="fas fa-bell"></i>
+            <div class="user-avatar">S</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <a href="{% url 'video_library' %}" class="nav-item active">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                Dashboard
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-play-circle"></i>
+                Courses
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-users"></i>
+                Groups
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-calendar"></i>
+                Calendar
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-inbox"></i>
+                Inbox
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-chart-line"></i>
+                Grades
+            </a>
+            <a href="/admin/" class="nav-item">
+                <i class="nav-icon fas fa-cog"></i>
+                Admin
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Welcome back! Here are your available courses and videos.</p>
+
+            <!-- Filters -->
+            <div class="filters">
+                <form method="get" style="display: flex; gap: 16px; align-items: end;">
+                    <div class="filter-group">
+                        <label class="filter-label">Subject</label>
+                        <select name="subject" class="filter-select">
+                            <option value="">All Subjects</option>
+                            {% for subject in subjects %}
+                                <option value="{{ subject.id }}" {% if subject.id|stringformat:'s' == selected_subject %}selected{% endif %}>
+                                    {{ subject.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label class="filter-label">Grade Level</label>
+                        <select name="grade" class="filter-select">
+                            <option value="">All Grades</option>
+                            {% for grade in grades %}
+                                <option value="{{ grade.id }}" {% if grade.id|stringformat:'s' == selected_grade %}selected{% endif %}>
+                                    {{ grade.name }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-filter"></i> Filter
+                    </button>
+                </form>
+            </div>
+
+            <!-- Course Cards -->
+            <div class="cards-grid">
+                {% for video in videos %}
+                <div class="card">
+                    <div class="card-header {% if video.subject.name == 'Math' %}math{% elif video.subject.name == 'Science' %}science{% elif video.subject.name == 'English' %}english{% elif video.subject.name == 'History' %}history{% endif %}">
+                        <div class="card-header-text">{{ video.subject.name }}</div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title">{{ video.title }}</h3>
+                        <div class="card-meta">
+                            <span><i class="fas fa-graduation-cap"></i> {{ video.grade_level.name }}</span>
+                            <span><i class="fas fa-clock"></i> {{ video.uploaded_at|date:"M d, Y" }}</span>
+                        </div>
+                        <p class="card-description">{{ video.description|truncatewords:15|default:"No description available." }}</p>
+                        <div class="card-footer">
+                            <a href="{% url 'video_detail' video.pk %}" class="btn btn-primary">
+                                <i class="fas fa-play"></i> Watch Video
+                            </a>
+                            <span class="badge badge-primary">{{ video.subject.category.name }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-state">
+                    <div class="empty-state-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <h3 class="empty-state-title">No videos found</h3>
+                    <p>Try adjusting your filters or check back later for new content.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-tasks"></i> To Do
+                </h3>
+                <div class="todo-item">
+                    <div class="item-title">Complete Video Assignment</div>
+                    <div class="item-meta">MATH 101 • Due Nov 15</div>
+                </div>
+                <div class="todo-item">
+                    <div class="item-title">Submit Research Paper</div>
+                    <div class="item-meta">SCIENCE 201 • Due Nov 18</div>
+                </div>
+                <div class="todo-item">
+                    <div class="item-title">Review Chapter 5</div>
+                    <div class="item-meta">HISTORY 301 • Due Nov 20</div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-calendar-alt"></i> Coming Up
+                </h3>
+                <div class="upcoming-item">
+                    <div class="item-title">Midterm Exam</div>
+                    <div class="item-meta">MATH 101 • Nov 22 at 2:00 PM</div>
+                </div>
+                <div class="upcoming-item">
+                    <div class="item-title">Group Project Presentation</div>
+                    <div class="item-meta">SCIENCE 201 • Nov 25 at 10:00 AM</div>
+                </div>
+                <div class="upcoming-item">
+                    <div class="item-title">Essay Discussion</div>
+                    <div class="item-meta">ENGLISH 101 • Nov 28 at 1:00 PM</div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-chart-line"></i> Recent Activity
+                </h3>
+                <div class="upcoming-item">
+                    <div class="item-title">Completed: Algebra Basics</div>
+                    <div class="item-meta">MATH 101 • 2 hours ago</div>
+                </div>
+                <div class="upcoming-item">
+                    <div class="item-title">New video available</div>
+                    <div class="item-meta">SCIENCE 201 • 5 hours ago</div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</body>
+</html>

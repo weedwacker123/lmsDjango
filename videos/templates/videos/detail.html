@@ -1,0 +1,207 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ video.title }} - Learning Management System</title>
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i> EduCanvas
+        </div>
+        <div class="user-menu">
+            <i class="fas fa-bell"></i>
+            <div class="user-avatar">S</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <a href="{% url 'video_library' %}" class="nav-item">
+                <i class="nav-icon fas fa-tachometer-alt"></i>
+                Dashboard
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="nav-icon fas fa-play-circle"></i>
+                Courses
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-users"></i>
+                Groups
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-calendar"></i>
+                Calendar
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-inbox"></i>
+                Inbox
+            </a>
+            <a href="#" class="nav-item">
+                <i class="nav-icon fas fa-chart-line"></i>
+                Grades
+            </a>
+            <a href="/admin/" class="nav-item">
+                <i class="nav-icon fas fa-cog"></i>
+                Admin
+            </a>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Breadcrumb -->
+            <div style="margin-bottom: 16px; font-size: 0.875rem; color: #718096;">
+                <a href="{% url 'video_library' %}" style="color: #667eea; text-decoration: none;">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+
+            <!-- Video Container -->
+            <div class="video-container">
+                <video class="video-player" controls>
+                    <source src="{{ video.file.url }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                
+                <div class="video-info">
+                    <h1 class="video-title">{{ video.title }}</h1>
+                    
+                    <div class="video-meta-bar">
+                        <span><i class="fas fa-book"></i> {{ video.subject.name }}</span>
+                        <span><i class="fas fa-graduation-cap"></i> {{ video.grade_level.name }}</span>
+                        <span><i class="fas fa-calendar"></i> {{ video.uploaded_at|date:"F d, Y" }}</span>
+                        {% if video.uploaded_by %}
+                        <span><i class="fas fa-user"></i> {{ video.uploaded_by.username }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="video-description">
+                        {{ video.description|default:"No description available for this video." }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Related Videos -->
+            <div style="margin-top: 32px;">
+                <h2 style="font-size: 1.5rem; font-weight: 600; margin-bottom: 24px; color: #1a202c;">
+                    Related Videos
+                </h2>
+                
+                <div class="cards-grid">
+                    <!-- Placeholder for related videos - you can extend this with actual related video logic -->
+                    <div class="card">
+                        <div class="card-header math">
+                            <div class="card-header-text">{{ video.subject.name }}</div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Advanced {{ video.subject.name }} Concepts</h3>
+                            <div class="card-meta">
+                                <span><i class="fas fa-graduation-cap"></i> {{ video.grade_level.name }}</span>
+                                <span><i class="fas fa-clock"></i> Coming Soon</span>
+                            </div>
+                            <p class="card-description">Dive deeper into {{ video.subject.name }} with advanced topics and practical examples.</p>
+                            <div class="card-footer">
+                                <button class="btn btn-outline" disabled>
+                                    <i class="fas fa-lock"></i> Coming Soon
+                                </button>
+                                <span class="badge badge-warning">Preview</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header science">
+                            <div class="card-header-text">{{ video.subject.name }}</div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">{{ video.subject.name }} Fundamentals</h3>
+                            <div class="card-meta">
+                                <span><i class="fas fa-graduation-cap"></i> {{ video.grade_level.name }}</span>
+                                <span><i class="fas fa-clock"></i> 45 min</span>
+                            </div>
+                            <p class="card-description">Master the fundamentals of {{ video.subject.name }} with this comprehensive overview.</p>
+                            <div class="card-footer">
+                                <button class="btn btn-outline" disabled>
+                                    <i class="fas fa-lock"></i> Coming Soon
+                                </button>
+                                <span class="badge badge-success">Free</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Right Sidebar -->
+        <aside class="right-sidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-list"></i> Course Progress
+                </h3>
+                <div style="margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span style="font-weight: 500;">{{ video.subject.name }} {{ video.grade_level.name }}</span>
+                        <span style="color: #667eea; font-weight: 600;">75%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 75%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-bookmark"></i> Quick Actions
+                </h3>
+                <div style="display: flex; flex-direction: column; gap: 8px;">
+                    <button class="btn btn-outline" style="justify-self: start;">
+                        <i class="fas fa-heart"></i> Add to Favorites
+                    </button>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-share"></i> Share Video
+                    </button>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-download"></i> Download Notes
+                    </button>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-comments"></i> Discussion
+                </h3>
+                <div style="font-size: 0.875rem; color: #718096; text-align: center; padding: 24px 0;">
+                    <i class="fas fa-comment-slash" style="font-size: 2rem; opacity: 0.3; margin-bottom: 8px; display: block;"></i>
+                    No discussions yet. Be the first to start a conversation!
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">
+                    <i class="fas fa-info-circle"></i> Video Details
+                </h3>
+                <div style="font-size: 0.875rem; color: #4a5568;">
+                    <div style="margin-bottom: 8px;">
+                        <strong>Category:</strong> {{ video.subject.category.name }}
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <strong>Subject:</strong> {{ video.subject.name }}
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <strong>Grade Level:</strong> {{ video.grade_level.name }}
+                    </div>
+                    <div style="margin-bottom: 8px;">
+                        <strong>Uploaded:</strong> {{ video.uploaded_at|date:"M d, Y" }}
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+</body>
+</html>
