@@ -9,6 +9,9 @@ db.sqlite3-journal
 media/
 staticfiles/
 
+# Render deployment
+.env
+
 # Environment variables
 .env
 .venv

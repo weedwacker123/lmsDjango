@@ -6,7 +6,7 @@ databases:
 services:
   - type: web
     name: educanvas-lms
-    runtime: python3
+    env: python
     buildCommand: "./build.sh"
     startCommand: "./start.sh"
     envVars:
